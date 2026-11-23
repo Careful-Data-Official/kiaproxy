@@ -7,7 +7,6 @@ use std::net::IpAddr;
 use std::process;
 use std::str::FromStr;
 use std::sync::Arc;
-use std::time::SystemTime;
 use tokio::net::{TcpListener, TcpStream};
 use tokio::sync::Mutex;
 use tokio::time::{Duration, sleep};
@@ -71,7 +70,7 @@ impl BalancerState {
 }
 
 fn timestamp() -> String {
-    Timestamp::now()
+    Timestamp::now().to_string()
 }
 
 fn log_init(message: &str) {
