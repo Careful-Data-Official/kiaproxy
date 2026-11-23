@@ -1,5 +1,4 @@
 #![forbid(unsafe_code)]
-use chrono::{SecondsFormat, Utc};
 use std::collections::HashMap;
 use std::env;
 use std::fmt;
@@ -12,6 +11,7 @@ use std::time::SystemTime;
 use tokio::net::{TcpListener, TcpStream};
 use tokio::sync::Mutex;
 use tokio::time::{Duration, sleep};
+use jiff::Timestamp;
 use uuid::Uuid;
 
 #[cfg(unix)]
@@ -71,7 +71,7 @@ impl BalancerState {
 }
 
 fn timestamp() -> String {
-    chrono::DateTime::<Utc>::from(SystemTime::now()).to_rfc3339_opts(SecondsFormat::Millis, true)
+    Timestamp::now()
 }
 
 fn log_init(message: &str) {
@@ -509,7 +509,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let state = Arc::new(Mutex::new(BalancerState::new(servers.len())));
 
     log_init(&format!(
-        "kiaproxy v0.2.0 TCP load balancer listening on \
+        "kiaproxy v0.2.1 TCP load balancer listening on \
          {listener_address} with LB_ALGO={algorithm} and backends {:?}",
         servers
     ));
